@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## Unreleased
+## v1.10.1-benchmark-fork: 2025-06-25
+- Divergence point of standalone benchmarking from main Djerba repository
 - GCGI-1597: Fixes for benchmarking script. Omit copying ichorCNA file if not available. Update or remove outdated INI parameters.
 
 ## v1.10.0: 2025-06-13
