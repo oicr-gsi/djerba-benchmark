@@ -275,7 +275,7 @@ class benchmarker(logger):
             msg = "No template INI supported for assay '{0}'".format(assay)
             self.logger.error(msg)
             raise RuntimeError(msg)
-        return os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+        return os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ini', filename)
 
     def log_inputs(self, assays, sample, sample_inputs):
         # summarize the available sample inputs in log output:
