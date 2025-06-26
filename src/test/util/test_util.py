@@ -2,7 +2,6 @@
 
 import json
 import logging
-import mako
 import os
 import re
 import tempfile
@@ -11,10 +10,9 @@ import unittest
 from configparser import ConfigParser
 from glob import glob
 
-from djerba.util.benchmark_tools import benchmarker, report_equivalence_tester, \
+from djerba_benchmark.util.tools import benchmarker, report_equivalence_tester, \
     DjerbaReportDiffError
 from djerba.util.environment import directory_finder
-from djerba.util.render_mako import mako_renderer
 from djerba.util.subprocess_runner import subprocess_runner
 from djerba.util.testing.tools import TestBase
 from djerba.util.validator import path_validator
@@ -214,26 +212,6 @@ class TestReportEquivalence(TestBase):
             self.assertTrue(ret4.is_equivalent())
         expected4 = "EQUIVALENT: Reports are not identical, but equivalent within tolerance"
         self.assertTrue(any([re.search(expected4, x) for x in cm4.output]))
-
-class TestMakoRenderer(TestBase):
-
-    def setUp(self):
-        super().setUp() # includes tmp_dir
-        self.test_source_dir = os.path.realpath(os.path.dirname(__file__))
-    
-    def test(self):
-        mrend = mako_renderer(self.test_source_dir)
-        test_template = mrend.get_template(self.test_source_dir, 'mako_template.html')
-        self.assertIsInstance(test_template, mako.template.Template)
-        args = {
-            'greeting': 'Hello, world!'
-        }
-        with open(os.path.join(self.test_source_dir, 'mako_expected.html')) as in_file:
-            expected_html = in_file.read()
-        html_1 = mrend.render_template(test_template, args)
-        self.assertEqual(html_1.strip(), expected_html.strip())
-        html_2 = mrend.render_name('mako_template.html', args)
-        self.assertEqual(html_2.strip(), expected_html.strip())
 
 if __name__ == '__main__':
     unittest.main()
