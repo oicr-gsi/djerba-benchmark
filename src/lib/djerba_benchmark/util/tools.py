@@ -452,12 +452,12 @@ class report_equivalence_tester(logger):
     T_ALT_COUNT = 't_alt_count'
     DELTA_DEFAULTS = {
         # WGS/WGTS deltas
-        EXPRESSION: 0.1, # expression is recorded as a number, this delta is 10%
-        MSI: 2.0,  # MSI is recorded as a percentage, this delta is 2.0%
-        HRD: 0.01,
+        EXPRESSION: 0.01, # expression is recorded as a number, this delta is 1% (previously set as 10%)
+        MSI: 0.5,  # MSI is recorded as a percentage, this delta is 0.5% (previously set as 2.0%)
+        HRD: 0.05, # HRD is recorded as a number, this delta is 0.05 (previously set as 0.01)
         # TAR deltas, both are counts of reads
-        T_DEPTH: 25,
-        T_ALT_COUNT: 5
+        T_DEPTH: 25, # t_depth is recorded as a count, this delta is 25 reads
+        T_ALT_COUNT: 10 # t_alt_count is recorded as a count, this delta is 10 reads (previously set as 5)
     }
     PLACEHOLDER = 0
 
@@ -556,22 +556,22 @@ class report_equivalence_tester(logger):
             expr1 = self.get_expressions_by_gene(self.data[1], name)
             delta = self.deltas[self.EXPRESSION]
             if set(expr0.keys()) != set(expr1.keys()):
-                self.logger.info("Gene sets differ, expressions are not equivalent")
+                self.logger.info("Genetic alteration sets differ, expressions are not equivalent")
                 plugin_eq = False
             else:
-                for gene in expr0.keys():
-                    if expr0[gene] == None or expr1[gene] == None:
-                        if expr0[gene] == None and expr1[gene] == None:
+                for alteration in expr0.keys():
+                    if expr0[alteration] == None or expr1[alteration] == None:
+                        if expr0[alteration] == None and expr1[alteration] == None:
                             pass
                         else:
                             msg = "{0} not equivalent: Mixed null and non-null expression"
-                            self.logger.debug(msg.format(gene))
+                            self.logger.debug(msg.format(alteration))
                             plugin_eq = False
                     else:
-                        diff = abs(expr0[gene] - expr1[gene])
+                        diff = abs(expr0[alteration] - expr1[alteration])
                         if diff > delta:
                             template = "{0} not equivalent: Expression delta > {1} "
-                            msg = template.format(gene, delta)
+                            msg = template.format(alteration, delta)
                             self.logger.debug(msg)
                             plugin_eq = False
             if plugin_eq:
@@ -609,6 +609,11 @@ class report_equivalence_tester(logger):
             return '&#x274C;' # X mark
 
     def get_expressions_by_gene(self, data, plugin):
+        # Check if plugin is supported
+        valid_plugins = {self.WGTS_SNV_INDEL_NAME, self.CNV_NAME}
+        if plugin not in valid_plugins:
+            raise ValueError("Unsupported plugin: {0}. Must be one of {1}".format(plugin, valid_plugins))
+
         body_key = self.BODY_KEY[plugin]
         xpct_key = self.XPCT_KEY[plugin]
         try:
@@ -618,7 +623,12 @@ class report_equivalence_tester(logger):
             raise
         expr = {}
         for item in body:
-            key = item[self.GENE]
+            if plugin == self.WGTS_SNV_INDEL_NAME:
+                # Match by gene and protein for SNV/indel expression
+                key = (item[self.GENE], item['protein'])
+            else:
+                # Match by gene for CNV expression
+                key = item[self.GENE]
             value = item[xpct_key]
             expr[key] = value
         return expr
@@ -720,6 +730,8 @@ class report_equivalence_tester(logger):
                 plugins[self.SUPPLEMENT_NAME][self.RESULTS][date_key] = placeholder
             # redact HTML template path
             plugins[self.SUPPLEMENT_NAME][self.RESULTS]['template_dir'] = placeholder
+            # redact author information
+            plugins[self.SUPPLEMENT_NAME][self.RESULTS]['author'] = placeholder
         else:
             msg = 'Plugin {0} not found for {1}'.format(self.SUPPLEMENT_NAME, report_path)
             self.logger.warning(msg)
@@ -763,29 +775,30 @@ class report_equivalence_tester(logger):
 
     ### Start: Methods to evaluate TAR metrics (t_depth, t_alt_count)
 
-    def get_tar_results_by_gene(self, data):
+    def get_tar_results_by_gene_and_protein(self, data):
         results = {}
         body_key = self.BODY_KEY[self.TAR_SNV_INDEL_NAME]
         for item in data[self.TAR_SNV_INDEL_NAME][self.RESULTS][body_key]:
-            results[item['Gene']] = item
+            key = (item['Gene'], item['Protein'])
+            results[key] = item
         return results
 
     def t_counts_are_equivalent(self):
         tar0 = self.get_tar_results_by_gene(self.data[0])
         tar1 = self.get_tar_results_by_gene(self.data[1])
         if set(tar0.keys()) != set(tar1.keys()):
-            self.logger.info("Gene sets differ, TAR metrics are not equivalent")
+            self.logger.info("Genetic alteration sets differ, TAR metrics are not equivalent")
             eq = False
         else:
             eq = True
-            for gene in tar0.keys():
-                t_depth_diff = abs(tar0[gene][self.T_DEPTH] - tar1[gene][self.T_DEPTH])
-                t_alt_diff = abs(tar0[gene][self.T_ALT_COUNT] - tar1[gene][self.T_ALT_COUNT])
+            for key in tar0.keys():
+                t_depth_diff = abs(tar0[key][self.T_DEPTH] - tar1[key][self.T_DEPTH])
+                t_alt_diff = abs(tar0[key][self.T_ALT_COUNT] - tar1[key][self.T_ALT_COUNT])
                 if t_depth_diff > self.deltas.get(self.T_DEPTH):
-                    self.logger.info(self.T_DEPTH+' not equivalent for gene '+gene)
+                    self.logger.info(self.T_DEPTH+' not equivalent for alteration '+key[0]+' ('+key[1]+')')
                     eq = False
                 elif t_alt_diff > self.deltas.get(self.T_ALT_COUNT):
-                    self.logger.info(self.T_ALT_COUNT+' not equivalent for gene '+gene)
+                    self.logger.info(self.T_ALT_COUNT+' not equivalent for alteration '+key[0]+' ('+key[1]+')')
                     eq = False
                 if not eq:
                     break
