@@ -6,7 +6,7 @@ import argparse
 import sys
 
 sys.path.pop(0) # do not import from script directory
-from djerba_benchmark.util.tools import benchmarker
+from lib.djerba_benchmark.util.tools import benchmarker
 
 def get_parser():
     """Construct the parser for command-line arguments"""
