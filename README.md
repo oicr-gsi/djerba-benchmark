@@ -4,8 +4,8 @@
 
 Generate and compare Djerba reports for benchmarking
 
-[![Release](https://img.shields.io/github/v/release/oicr-gsi/djerba?color=green)](https://github.com/oicr-gsi/djerba-benchmark/releases)
-[![License](https://img.shields.io/github/license/oicr-gsi/djerba)](https://github.com/oicr-gsi/djerba-benchmark/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/oicr-gsi/djerba-benchmark?color=green)](https://github.com/oicr-gsi/djerba-benchmark/releases)
+[![License](https://img.shields.io/github/license/oicr-gsi/djerba-benchmark)](https://github.com/oicr-gsi/djerba-benchmark/blob/main/LICENSE)
 
 This repository contains code to generate and compare [Djerba](https://github.com/oicr-gsi/djerba) reports on a standard set of inputs. It is intended for benchmarking and quality control.
 
