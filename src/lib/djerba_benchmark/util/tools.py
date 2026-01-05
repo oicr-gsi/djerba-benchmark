@@ -101,8 +101,8 @@ class benchmarker(logger):
         PURPLE_FILE: '{0}/**/{1}*.purple.zip',
         HRD_FILE: '{0}/**/{1}*.signatures.json',
         MAF_TAR_T: '{0}/**/{1}_*_T_*_filtered_maf.gz',
-        CC_TAR_T: '{0}/**/{1}_*_T_*.all.unique.dcs.sorted.bam',
-        CC_TAR_N: '{0}/**/{1}_*_R_*.all.unique.dcs.sorted.bam',
+        CC_TAR_T: '{0}/**/{1}_*_T_*.all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz',
+        CC_TAR_N: '{0}/**/{1}_*_R_*.all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz',
         SEG_FILE: '{0}/**/{1}*.seg.txt',
         ICHORCNA_FILE: '{0}/**/{1}*_metrics.json',
         BAMQC_FILE: '{0}/**/{1}*.bamQC_results.json',
@@ -205,7 +205,7 @@ class benchmarker(logger):
         return result
 
     def find_cc_metrics(self, CC_TAR_path):
-        # find consensus cruncher metrics -- in same directory as .all.unique.dcs.sorted.bam file (if any)
+        # find consensus cruncher metrics -- in same directory as .all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz file (if any)
         if CC_TAR_path == None:
             metric_path = None
         else:
