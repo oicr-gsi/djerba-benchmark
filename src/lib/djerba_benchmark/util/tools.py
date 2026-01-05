@@ -239,7 +239,8 @@ class benchmarker(logger):
             sample_inputs[self.CC_N] = self.find_cc_metrics(sample_inputs[self.CC_TAR_N])
 
             # Remove _somatic part in TAR maf path if it exits
-            sample_inputs[self.MAF_TAR_T] = sample_inputs[self.MAF_TAR_T].replace("_somatic", "")
+            if sample_inputs[self.MAF_TAR_T] is not None:
+                sample_inputs[self.MAF_TAR_T] = sample_inputs[self.MAF_TAR_T].replace("_somatic", "")
 
             # Check which assay(s) have inputs available; run all which apply
             assays = []
