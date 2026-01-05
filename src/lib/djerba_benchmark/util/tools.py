@@ -215,7 +215,7 @@ class benchmarker(logger):
                 self.validator.validate_input_file(metric_path)
             except OSError as err:
                 msg = "Cannot find expected metrics path {0} ".format(metric_path)+\
-                    "from .all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz {0}".format(CC_TAR_path)
+                    "from .all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz path {0}".format(CC_TAR_path)
                 self.logger.error(msg)
                 raise OSError(msg) from err
         return metric_path
