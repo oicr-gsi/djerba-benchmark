@@ -792,8 +792,8 @@ class report_equivalence_tester(logger):
         return results
 
     def t_counts_are_equivalent(self):
-        tar0 = self.get_tar_results_by_gene(self.data[0])
-        tar1 = self.get_tar_results_by_gene(self.data[1])
+        tar0 = self.get_tar_results_by_gene_and_protein(self.data[0])
+        tar1 = self.get_tar_results_by_gene_and_protein(self.data[1])
         if set(tar0.keys()) != set(tar1.keys()):
             self.logger.info("Genetic alteration sets differ, TAR metrics are not equivalent")
             eq = False
