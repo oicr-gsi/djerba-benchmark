@@ -13,6 +13,6 @@ The benchmarking code was originally part of the main Djerba repository. It dive
 
 ## Copyright and License
 
-Copyright &copy; 2020-2025 by Genome Sequence Informatics, Ontario Institute for Cancer Research.
+Copyright &copy; 2020-2026 by Genome Sequence Informatics, Ontario Institute for Cancer Research.
 
 Licensed under the [GPL 3.0 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
