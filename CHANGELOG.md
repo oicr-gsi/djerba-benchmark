@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v2.0.1: 2026-01-08
+- Fixed djerba-benchmark setup for standalone Modular use
+- Updates to djerba-benchmark code for TAR 4.0 compatibility
+
+## v2.0.0: 2025-08-22
+- First production release of djerba-benchmark
+
 ## v1.10.1-benchmark-fork: 2025-06-25
 - Divergence point of standalone benchmarking from main Djerba repository
 - GCGI-1597: Fixes for benchmarking script. Omit copying ichorCNA file if not available. Update or remove outdated INI parameters.
