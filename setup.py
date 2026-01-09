@@ -33,10 +33,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='djerba',
+    name='djerba-benchmark',
     version=__version__,
     scripts=[
         'src/bin/benchmark.py',
+        'src/bin/diff_reports.py',
     ],
     packages=find_packages(where=package_root),
     package_dir={'' : package_root},
