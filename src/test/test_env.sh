@@ -2,21 +2,21 @@
 
 # 'source' this file to run tests
 
-# if DJERBA_SOURCE_DIR not set
-if [ -z "${DJERBA_SOURCE_DIR}" ]; then
+# if DJERBA_BENCHMARK_SOURCE_DIR not set
+if [ -z "${DJERBA_BENCHMARK_SOURCE_DIR}" ]; then
     # set source dir based on script location; see https://stackoverflow.com/a/246128
-    DJERBA_SOURCE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/../.." &> /dev/null && pwd )
+    DJERBA_BENCHMARK_SOURCE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/../.." &> /dev/null && pwd )
 fi
 
 # do sanity checking, then export the test variables
-if [ ! -d "${DJERBA_SOURCE_DIR}" ]; then
-    echo "DJERBA_SOURCE_DIR '$DJERBA_SOURCE_DIR' does not exist"
+if [ ! -d "${DJERBA_BENCHMARK_SOURCE_DIR}" ]; then
+    echo "DJERBA_BENCHMARK_SOURCE_DIR '$DJERBA_BENCHMARK_SOURCE_DIR' does not exist"
 elif [ ! -d "${DJERBA_TEST_DIR}" ]; then
     echo "DJERBA_TEST_DIR '$DJERBA_TEST_DIR' does not exist"
 elif [ -z "${DJERBA_BASE_DIR}" ]; then
     echo "Must load the Djerba environment module; first update MODULEPATH if necessary"
 else
     # export variables for running tests on the source code
-    export PYTHONPATH=${DJERBA_SOURCE_DIR}/src/lib:$PYTHONPATH
-    export PATH=${DJERBA_SOURCE_DIR}/src/bin:$PATH
+    export PYTHONPATH=${DJERBA_BENCHMARK_SOURCE_DIR}/src/lib:$PYTHONPATH
+    export PATH=${DJERBA_BENCHMARK_SOURCE_DIR}/src/bin:$PATH
 fi
