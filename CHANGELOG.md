@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.0.2: 2026-05-14
+- Update file requirements for assays under djerba-v1.11.11
+
 ## v2.0.1: 2026-01-08
 - Fixed djerba-benchmark setup for standalone Modular use
 - Updates to djerba-benchmark code for TAR 4.0 compatibility
