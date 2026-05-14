@@ -66,7 +66,6 @@ class benchmarker(logger):
     ARRIBA_FILE = 'arriba_path'
     DONOR = 'donor'
     BAMQC_FILE = 'bamqc_file'
-    CTDNA_FILE = 'ctdna_file'
     HRD_FILE = 'hrd_file'
     MAF_FILE = 'maf_path'
     MAF_TAR_T = 'maf_path_tar_tumour'
@@ -82,10 +81,6 @@ class benchmarker(logger):
     PURPLE_FILE = 'purple_path'
     RSEM_FILE = 'rsem_genes_results'
     SEG_FILE = 'seg_file'
-    CC_T = 'consensus_cruncher_tumour'
-    CC_N = 'consensus_cruncher_normal'
-    CC_TAR_T = 'consensus_cruncher_tumour_directory'
-    CC_TAR_N = 'consensus_cruncher_normal_directory'
     ICHORCNA_FILE = 'ichorcna_file'
     TUMOUR_ID = 'tumour_id'
     NORMAL_ID = 'normal_id'
@@ -96,13 +91,10 @@ class benchmarker(logger):
         MAVIS_FILE: '{0}/**/{1}*.mavis_summary.tab',
         RSEM_FILE: '{0}/**/{1}_*.genes.results',
         MSI_FILE: '{0}/**/{1}_*.msi.booted',
-        CTDNA_FILE: '{0}/**/{1}_*.SNP.count.txt',
         ARRIBA_FILE: '{0}/**/{1}*.fusions.tsv',
         PURPLE_FILE: '{0}/**/{1}*.purple.zip',
         HRD_FILE: '{0}/**/{1}*.signatures.json',
         MAF_TAR_T: '{0}/**/{1}_*_T_*_filtered_maf.gz',
-        CC_TAR_T: '{0}/**/{1}_*_T_*.all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz',
-        CC_TAR_N: '{0}/**/{1}_*_R_*.all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz',
         SEG_FILE: '{0}/**/{1}*.seg.txt',
         ICHORCNA_FILE: '{0}/**/{1}*_metrics.json',
         BAMQC_FILE: '{0}/**/{1}*.bamQC_results.json',
@@ -122,15 +114,12 @@ class benchmarker(logger):
     ]
     EXPECTED_TAR = [
         ICHORCNA_FILE,
-        CC_T,
-        CC_N,
         SEG_FILE,
         MAF_TAR_T
     ]
     EXPECTED_WGS = [
         MAF_FILE,
         MSI_FILE,
-        CTDNA_FILE,
         PURPLE_FILE,
         HRD_FILE
     ]
@@ -139,7 +128,6 @@ class benchmarker(logger):
         MAVIS_FILE,
         RSEM_FILE,
         MSI_FILE,
-        CTDNA_FILE,
         ARRIBA_FILE,
         PURPLE_FILE,
         HRD_FILE
@@ -204,22 +192,6 @@ class benchmarker(logger):
             self.logger.debug(msg)
         return result
 
-    def find_cc_metrics(self, CC_TAR_path):
-        # find consensus cruncher metrics -- in same directory as .all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz file (if any)
-        if CC_TAR_path == None:
-            metric_path = None
-        else:
-            cc_dir = os.path.dirname(CC_TAR_path)
-            metric_path = os.path.join(cc_dir, 'allUnique-hsMetrics.HS.txt')
-            try:
-                self.validator.validate_input_file(metric_path)
-            except OSError as err:
-                msg = "Cannot find expected metrics path {0} ".format(metric_path)+\
-                    "from .all.unique.dcs.sorted.mutect2.tumor_only.filtered.vcf.gz path {0}".format(CC_TAR_path)
-                self.logger.error(msg)
-                raise OSError(msg) from err
-        return metric_path
-
     def find_inputs(self, results_dir):
         inputs = {}
         for sample in self.samples:
@@ -235,8 +207,6 @@ class benchmarker(logger):
             for key in self.GLOB_TEMPLATES.keys():
                 pattern = self.GLOB_TEMPLATES[key].format(results_dir, sample)
                 sample_inputs[key] = self.glob_single(pattern)
-            sample_inputs[self.CC_T] = self.find_cc_metrics(sample_inputs[self.CC_TAR_T])
-            sample_inputs[self.CC_N] = self.find_cc_metrics(sample_inputs[self.CC_TAR_N])
 
             # Remove _somatic part in TAR maf path if it exits
             if sample_inputs[self.MAF_TAR_T] is not None:
