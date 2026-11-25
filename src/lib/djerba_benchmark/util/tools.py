@@ -214,6 +214,9 @@ class benchmarker(logger):
             for key in self.GLOB_TEMPLATES.keys():
                 pattern = self.GLOB_TEMPLATES[key].format(results_dir, sample)
                 sample_inputs[key] = self.glob_single(pattern)
+                if sample_inputs[key] is None and key == self.MAVIS3_FILE:
+                    pattern = self.GLOB_TEMPLATES[key].format(results_dir, sample.replace("_", "."))
+                    sample_inputs[key] = self.glob_single(pattern)
 
             # Remove _somatic part in TAR maf path if it exits
             if sample_inputs[self.MAF_TAR_T] is not None:
