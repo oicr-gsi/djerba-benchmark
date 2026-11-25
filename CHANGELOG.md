@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.3: 2026-11-25
+- Added 7 new TAR cases from CGIVAL cohort
+- Support Mavis3 upgrade
+
 ## v2.0.2: 2026-05-14
 - Update file requirements for assays under djerba-v1.11.11
 
