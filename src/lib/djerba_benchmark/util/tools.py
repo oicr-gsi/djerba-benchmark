@@ -40,10 +40,17 @@ class benchmarker(logger):
         'GSICAPBENCH_0001',
         'GSICAPBENCH_0002',
         'GSICAPBENCH_0003',
-        'GSICAPBENCH_011291',
-        'GSICAPBENCH_011303',
-        'GSICAPBENCH_011524',
-        'GSICAPBENCH_011633',
+        'GSICAPBENCH_010169',
+        'GSICAPBENCH_010238',
+        'GSICAPBENCH_010263',
+        'GSICAPBENCH_010268',
+        'GSICAPBENCH_010288',
+        'GSICAPBENCH_010296',
+        'GSICAPBENCH_010322',
+        # 'GSICAPBENCH_011291',
+        # 'GSICAPBENCH_011303',
+        # 'GSICAPBENCH_011524',
+        # 'GSICAPBENCH_011633',
         'GSICAPBENCH_1248',
         'GSICAPBENCH_1309',
         'GSICAPBENCH_1390',
@@ -69,7 +76,7 @@ class benchmarker(logger):
     HRD_FILE = 'hrd_file'
     MAF_FILE = 'maf_path'
     MAF_TAR_T = 'maf_path_tar_tumour'
-    MAVIS_FILE = 'mavis_path'
+    MAVIS3_FILE = 'mavis3_path'
     MRDETECT_HBC = 'mrdetect_hbc'
     MRDETECT_SNP = 'mrdetect_snp'
     MRDETECT_TXT = 'mrdetect_txt'
@@ -88,7 +95,7 @@ class benchmarker(logger):
     UPDATE_CACHE = 'update_cache'
     GLOB_TEMPLATES = {
         MAF_FILE: '{0}/**/{1}_*mutect2.filtered.maf.gz',
-        MAVIS_FILE: '{0}/**/{1}*.mavis_summary.tab',
+        MAVIS3_FILE: '{0}/**/{1}*.mavis_summary.tab',
         RSEM_FILE: '{0}/**/{1}_*.genes.results',
         MSI_FILE: '{0}/**/{1}_*.msi.booted',
         ARRIBA_FILE: '{0}/**/{1}*.fusions.tsv',
@@ -125,7 +132,7 @@ class benchmarker(logger):
     ]
     EXPECTED_WGTS = [
         MAF_FILE,
-        MAVIS_FILE,
+        MAVIS3_FILE,
         RSEM_FILE,
         MSI_FILE,
         ARRIBA_FILE,
